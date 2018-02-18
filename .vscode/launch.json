@@ -8,7 +8,7 @@
             "name": "Launch one.html",
             "type": "chrome",
             "request": "launch",
-            "file": "${workspaceRoot}/html/one.html"
+            "file": "${workspaceRoot}/html/two.html"
         } 
     ]
 }
