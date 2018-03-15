@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <meta content=always name=referrer>
+    <title>OpenLayers 3地图示例</title>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+
+    <style type="text/css">
+        body,html,div,ul,li,iframe,p,img{border:none;padding:0;margin:0;}
+        #map{width:100%;height:300px;}
+        #menu{margin-left:50px;width:100%;height:0px; font-size:14px;font-family:"微软雅黑";}
+        .checkbox{ z-index:20001}
+        .marker{width:20px;height:20px;border:1px solid #088;border-radius:10px;background-color:#0FF;opacity:0.5;}
+        .address{text-decoration:none;color:#aa3300;font-size:14px;font-weight:bold;text-shadow:black 0.1em 0.1em 0.2em;}
+    </style>
+</head>
+<body>
+
+<div id="all" style="width:800px;height:300px;background-color:#1b6d85">
+
+    <div id="map"style="width:800px;height:300px;background-color:#1b6d85" >
+        <div id="menu" style="z-index:20003;background-color: transparent;">
+            <label class="checkbox"><input type="radio" name="radio" value="vector" checked="checked"/> Vector Labels </label>
+            <label class="checkbox"><input type="radio" name="radio" value="overlay"> Overlay Labels </label>
+        </div>
+    </div>
+    <div id="label" style="display:none;">
+        <div id="marker" class="marker" title="Marker">
+            <a class="address" id="address" target="_blank" href="http://www.openlayers.org/">标注点</a>
+        </div>
+    </div>
+    <div id="popup" class="ol-poppup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content">
+        </div>
+    </div>
+</div>
+<script>
+    var map = new ol.Map({
+        // 设置地图图层
+        layers: [
+            // 创建一个使用Open Street Map地图源的瓦片图层
+            new ol.layer.Tile(
+                {
+                    source: new ol.source.OSM()//osm地图
+                }
+            )
+        ],
+        // 设置显示地图的视图
+        view: new ol.View({
+            center: [0, 0],    // 定义地图显示中心于经度0度，纬度0度处
+            zoom: 2            // 并且定义地图显示层级为2
+        }),
+        // 让id为map的div作为地图的容器
+        target: 'map'
+    });
+
+    var createLabelStyle = function (feature) {
+        return new ol.style.Style({
+            image:new ol.style.Icon(({
+                anchor:[0.5,60],
+                anchorOrigin:'top-right',
+                anchorXUnits:'fraction',
+                anchorYUnits:'pixels',
+                offsetOrigin:'top-right',
+                opacity:0.75 ,
+                src:'../image/blueIcon.png'
+            })),
+            text:new ol.style.Text({
+                textAlign:'center',
+                textBaseline:'middle',
+                font:'normal 14px 微软雅黑',
+                text:feature.get('name'),
+                fill:new ol.style.Fill({color:'#aa3300'}),
+                stroke:new ol.style.Stroke({color:'#ffcc33',width:2})
+            })
+        })
+    }
+
+
+    var beijing = ol.proj.fromLonLat([116.28,39.54]);
+    var wuhan = ol.proj.fromLonLat([114.21,30.37]);
+    var iconFeature = new ol.Feature({
+        geometry:new ol.geom.Point(beijing),
+        name:'北京市',
+        population:2115
+    });
+    iconFeature.setStyle(createLabelStyle(iconFeature));
+    var vectorSource = new ol.source.Vector({
+        features:[iconFeature]
+    });
+    var vectorLayer = new ol.layer.Vector({
+        source:vectorSource
+    });
+    map.addLayer(vectorLayer);
+    var marker = new ol.Overlay({
+        position:wuhan,
+        positioning:'center-center',
+        element:document.getElementById('marker'),
+        stopEvent:false
+    })
+    map.addOverlay(marker);
+    marker.getElement().title='武汉市';
+    var text = new ol.Overlay({
+        position:wuhan,
+        element:document.getElementById('address')
+    });
+    map.addOverlay(text);
+    text.getElement().innerText = marker.getElement().title;
+
+    //map添加点击事件
+    map.on('click',function (evt) {
+        var type =  $('input:radio:checked').val();
+        var point = evt.coordinate;
+        if (type == "vector"){
+            addVectorLabel(point);
+        }else if (type == "overlay"){
+            addOverlayLabel(point);
+        }
+    })
+
+    //添加一个新的标注
+    function addVectorLabel(coordinate){
+        var newFeature = new ol.Feature({
+            geometry:new ol.geom.Point(coordinate),
+            name:'标注点'
+        });
+        newFeature.setStyle(createLabelStyle(newFeature));
+        vectorSource.addFeature(newFeature);
+    }
+
+</script>
+</body>
+</html>

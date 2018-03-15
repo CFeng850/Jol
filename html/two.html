@@ -11,6 +11,16 @@
     <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
 
+    <style type="text/css">
+        #map{width:100%;height:570px;}
+        #menu{float:left;position:absolute;bootm:10px;z-index:2000;}
+        .tooltip-inner{white-space:nowrap}
+        .ol-custom-overviewmap,.ol-custom-overviewmap.ol-uncollapsible{
+            bottom:auto;left:auto;
+            right:0;
+            top:0;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,7 +31,6 @@
             <button id="zoom-in">单击放大</button>
             <button id="panto">平移武汉</button>
             <button id="restore">复位</button>
-
         </div>
     </div>
  
@@ -48,13 +57,54 @@
             // 让id为map的div作为地图的容器
             target: 'map'    
         });
-       //地图试图初始化参数
+       //记录地图试图初始化参数---用以复位操作
        var view= map.getView();
-       var zoom= view.getZoom();
-       var center= view.getCenter();
-       var rotation = view.getRotation();
+       var zoom= view.getZoom();//缩放
+       var center= view.getCenter();//中心
+       var rotation = view.getRotation();//旋转度数
        
-       
+       document.getElementById('zoom-out').onclick=function(){
+           var veiew = map.getView();
+           var zoom = view.getZoom();
+           view.setZoom(zoom-1);//地图减小一级
+       };
+       document.getElementById('zoom-in').onclick=function(){
+           var veiew = map.getView();
+           var zoom = view.getZoom();
+           view.setZoom(zoom+1);//地图放大一级
+       };
+       document.getElementById('panto').onclick=function(){
+           var veiew = map.getView();
+           var wh = ol.proj.fromLonLat([114.31667,30.51667]);
+           view.setCenter(wh);
+       };
+       document.getElementById('restore').onclick=function(){
+           view.setCenter(center);
+           view.setRotation(rotation);
+           view.setZoom(zoom);
+       };
+       //为内置的缩放控件和旋转控件添加tooltip提示信息
+        $('.ol-zoom-in,.ol-zoom-out').tooltip({
+            placement:'right'
+        });
+      $('.ol-zoom-reset,.ol-attribution button[title]').tooltip({
+          placement:'left'
+      });
+      //鹰眼控件
+      var overviewMapControl = new ol.control.OverviewMap({
+          layers:[
+              new ol.layers.Tile({
+                  source:new ol.source.OSM({
+                      'url':"http://{a-b}.title.opencyclemap.org/cycle/{z}/{x}/{y}.png"
+                  })
+              })
+          ],
+          collapseLabel:'\u00BB',
+          label:'\u00AB',
+          collapsed:false
+      })
+      map.addControl(overviewMapControl)
+
 
     </script>
 </body>

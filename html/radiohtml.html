@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+
+</head>
+<body>
+
+    <label ><input type="radio" name="sex" value="1" checked="checked"> Vector Labels </label>
+    <label  ><input type="radio" name="sex" value="2"> Overlay Labels </label>
+    <label><input type="radio" name="sex" value="m" >男</label>
+    <label><input type="radio" name="sex" value="f">女</label>
+
+<button  >123</button><br>
+<script>
+    $(function () {
+        $('button').click(function(){
+            var val = $('input[name="sex"]:checked').val();
+            console.log(val);
+        });
+    })
+
+</script>
+
+
+
+
+
+</body>
+</html>

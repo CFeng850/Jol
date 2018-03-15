@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+    <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+    <meta content=always name=referrer>
+    <title>OpenLayers 3地图示例</title>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+
+    <style type="text/css">
+        #map{width:100%;height:570px;}
+        .layerControl{position:absolute;bottom:5px;min-width:200px;max-height:200px;right:0px;top:5px;
+        z-index:2001;
+        color:#ffffff;background-color:#4c4e5a;
+        border-width:10px;
+        border-radius:10px;
+        border-color:#000 #000 #000 #000 ;
+        }
+        .layerControl .title{font-weight:bold;font-size:15px;margin:10px;}
+        .layerTree li {list-style:none;margin:5px 10px;}
+    </style>
+</head>
+<body>
+
+<div  id="map">
+    <div id="layerControl" class="layerControl">
+        <div class="title"><label>图层列表</label></div>
+        <ul id="layerTree" class="layerTree"></ul>
+    </div>
+
+    <script>
+        var layer = new Array();
+        var layerName = new Array();
+        var layerVisibility = new Array();
+
+        //加载图层列表中的数据
+        function loadLayersControl(map,id){
+            var treeContent = document.getElementById(id);
+            var layers = map.getLayers();
+            for (var i=0;i<layers.getLength();i++){
+                layer[i] = layers.item(i);
+                layerName[i] = layer[i].get('name');
+                layerVisibility[i] = layer[i].getVisible();
+
+                var elementLi = document.createElement('li');
+                treeContent.appendChild(elementLi);
+
+                var elementInput = document.createElement("input");
+                elementInput.type="checkbox";
+                elementInput.name="layers";
+                elementLi.appendChild(elementInput);
+
+                var elementLable = document.createElement('label');
+                elementLable.className = "layer";
+
+                setInnerText(elementLable, layerName[i]);
+                elementLi.appendChild(elementLable);
+
+                if (layerVisibility[i]){
+                    elementInput.checked = true;
+                }
+                addChangeEvent(elementInput, layer[i]);
+            }
+        }
+        //为checkbox元素绑定变更事件
+        function  addChangeEvent(element,layer){
+            element.onclick = function(){
+                if (element.checked){
+                    layer.setVisible(true);
+                }else{
+                    layer.setVisible(false);
+                }
+            };
+        }
+        //动态设置文本内容
+        function setInnerText(element,text){
+            if (typeof element.textContent == "string"){
+                element.textContent = text;
+            }else{
+                element.innerText = text;
+            }
+        }
+        var map = new ol.Map({
+            // 设置地图图层
+            layers: [
+                // 创建一个使用Open Street Map地图源的瓦片图层
+                new ol.layer.Tile(
+                    {
+                        source: new ol.source.OSM(),//osm地图
+                        name:'世界地图OSM'
+                    }
+                ) ,
+                new ol.layer.Vector({
+                    source:new ol.source.Vector({
+                        url:'../data/countries.geojson',
+                        format:new ol.format.GeoJSON()
+                    }),
+                    name:'国界json格式矢量图'
+                }),
+                new ol.layer.Vector({
+                    source:new ol.source.Vector({
+                        url:'../data/2012_Earthquakes_Mag5.kml',
+                        format:new ol.format.KML({
+                            extractStyles:false
+                        })
+                    }),
+                    name:'点KML格式矢量图'
+                })
+            ],
+            // 设置显示地图的视图
+            view: new ol.View({
+                center: [0, 0],    // 定义地图显示中心于经度0度，纬度0度处
+                zoom: 2            // 并且定义地图显示层级为2
+            }),
+            // 让id为map的div作为地图的容器
+            target: 'map'
+        });
+        //比例尺
+        var scaleLineControl = new ol.control.ScaleLine({
+            units:"metric"
+        })
+
+        map.addControl(scaleLineControl);
+        loadLayersControl(map, "layerTree");
+    </script>
+</div>
+</body>
+</html>
