@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>overlay图标</title>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+
+<!--图标大小变动-->
+    <link href="../css/htmlCss/3overlaycss.css" rel="stylesheet" type="text/css" />
+
+<!--图标添加点击事件-->
+    <script>
+        function egg(){
+            alert('蛋');
+        }
+
+        function goblin(){
+            alert('怪物');
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div  id="map"  class="col-md-12" style="background-color: #ffffff;width: 1200px;height: 500px;"> </div>
+    </div>
+</div>
+<div id="mouse-position"></div>
+
+<!--每个图标都需要一个html的div-->
+
+<!--下面就是传统的显示一个图片图标的方式，用img-->
+<div id="anchor" onclick="goblin()">
+    <!--<img src="../image/ico/锚点.png" alt="示例锚点"/>-->
+    <img src="../image/ico/动物32亮黄.png" alt="示例锚点"/>
+</div>
+
+<!--下面就是传统的显示一个图片图标的方式，用img-->
+<div id="anchor2" onclick="egg()">
+    <!--<img src="../image/ico/锚点.png" alt="示例锚点"/>-->
+    <img id="anchorImg" src="../image/ico/精灵蛋.png" alt="示例锚点"/>
+</div>
+
+
+<script type="text/javascript">
+    //鼠标位置
+    var mouseXY = new ol.control.MousePosition({
+        coordinateFormat:ol.coordinate.createStringXY(4),
+        projection:'EPSG:4326',
+        className:'mouseXy',
+        target:document.getElementById('mouse-position'),
+        undefinedHTML:'-------'
+    });
+    //地图
+    var map = new ol.Map({
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        target: 'map',
+        view: new ol.View({
+            projection: 'EPSG:4326',
+            center: [104, 31],
+            zoom: 10
+        })
+        ,controls:ol.control.defaults().extend([mouseXY])
+    });
+//=======================================================怪物图标===============================================================
+    // 下面把上面的图标附加到地图上，需要一个ol.Overlay
+    var anchor = new ol.Overlay({
+        element: document.getElementById('anchor')
+    });
+    // 关键的一点，需要设置附加到地图上的位置
+    anchor.setPosition([104.0000, 31]);
+    map.addOverlay(anchor);
+//========================================================宠物蛋图标==============================================================
+    var anchor2 = new ol.Overlay({
+        element: document.getElementById('anchor2')
+    });
+    // 关键的一点，需要设置附加到地图上的位置
+    anchor2.setPosition([104.0617, 31]);
+    // 然后添加到map上
+    map.addOverlay(anchor2);
+
+</script>
+
+</body>
+</html>

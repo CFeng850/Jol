@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础地图展示</title>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div  id="map"  class="col-md-12" style="background-color: #ffffff;width: 1200px;height: 500px;"> </div>
+    </div>
+</div>
+
+<script>
+    // 创建地图
+    new ol.Map({
+        // 设置地图图层
+        layers: [
+            // 创建一个使用Open Street Map地图源的瓦片图层
+            new ol.layer.Tile({source: new ol.source.OSM()})
+        ],
+        // 设置显示地图的视图
+        view: new ol.View({
+            center: [0, 0],    // 定义地图显示中心于经度0度，纬度0度处
+            zoom: 2            // 并且定义地图显示层级为2
+        }),
+        // 让id为map的div作为地图的容器
+        target: 'map'
+    });
+</script>
+</body>
+
+</html>

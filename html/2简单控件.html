@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html xmlns=http://www.w3.org/1999/xhtml>
+<head>
+        <meta http-equiv=Content-Type content="text/html;charset=utf-8">
+        <meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+        <meta content=always name=referrer>
+        <title>基础地图展示</title>
+        <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+        <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="../js/ol-debug.js" charset="utf-8"></script>
+        <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+    <style type="text/css">
+        .mouseXy{
+            float: left;
+        }
+        /*自定义鹰眼样式*/
+        .ol-custom-overviewmap,
+        .ol-custom-overviewmap.ol-uncollapsible {
+            bottom: auto;
+            left: auto;
+            right: 10px;
+            /*右侧显示*/
+            top: 30px;
+            /*顶部显示*/
+        }
+        /* 鹰眼控件展开时控件外框的样式 */
+        .ol-custom-overviewmap:not(.ol-collapsed) {
+            border: 1px solid black;
+        }
+        /* 鹰眼控件中地图容器的样式 */
+        .ol-custom-overviewmap .ol-overviewmap-map {
+            border: none;
+            width: 300px;
+        }
+        /* 在鹰眼控件中显示当前窗口中主图区域的边框 */
+        .ol-custom-overviewmap .ol-overviewmap-box {
+            border: 2px solid red;
+        }
+        /* 在鹰眼控件张开时其控件按钮图标的样式 */
+        .ol-custom-overviewmap:not(.ol-collapsed) button {
+            bottom: auto;
+            left: auto;
+            right: 1px;
+            top: 1px;
+        }
+
+
+    </style>
+    <script>
+        function hello(){
+            alert('hello');
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div  id="map"  class="col-md-12" style="background-color: #ffffff;width: 1200px;height: 500px;"> </div>
+    </div>
+    <div class="row">
+        <div  class="col-md-12" style="background-color: #ffffff;width: 1200px;height: 500px;">
+            <p>鼠标：</p><div id="mouse-position"></div>
+            <br>
+            <button onclick="suoxiao()" type="button">缩小</button>
+            <button onclick="fangda()" type="button">放大</button>
+            <button onclick="wuhan()" type="button">武汉</button>
+            <button onclick="fuwei()" type="button">复位</button>
+        </div>
+    </div>s
+</div>
+
+<script>
+
+    // 创建地图
+    var map = new ol.Map({
+        target: 'map',
+        // 设置地图图层
+        layers: [
+            // 创建一个使用Open Street Map地图源的瓦片图层
+            new ol.layer.Tile({source: new ol.source.OSM()})
+        ],
+        // 设置显示地图的视图
+        view: new ol.View({
+            center: [12950000, 4860000],    // 定义地图显示中心于经度0度，纬度0度处
+            zoom: 8,              // 并且定义地图显示层级为8
+            minZoom:6,            //限制缩放范围
+            maxZoom:12
+            // ,rotation:Math.PI / 6 //初始旋转，旋转后复位按钮显示
+        })
+        // ,controls:ol.control.defaults().extend([mouseXY])
+    });
+
+//定义控件=================================================
+    //ZoomSlider控件
+    var zoomlider = new ol.control.ZoomSlider();
+    //ZoomToExtent控件
+    var zoomToExtent = new ol.control.ZoomToExtent({
+        extent:[13100000,4290000,13200000,5210000]
+    });
+    map.addControl(zoomlider);
+    map.addControl(zoomToExtent);
+
+    //鼠标位置
+    var mouseXY = new ol.control.MousePosition({
+        coordinateFormat:ol.coordinate.createStringXY(4),
+        projection:'EPSG:4326',
+        className:'mouseXy',
+        target:document.getElementById('mouse-position'),
+        undefinedHTML:'-------'
+    });
+    map.addControl(mouseXY);
+
+    //比例尺
+    var scaleLineControl = new ol.control.ScaleLine({
+        //比例尺单位 degrees,imperial,us,nautical,metric
+        units:"metric"
+    });
+    map.addControl(scaleLineControl);
+
+    //鹰眼
+    var overviewMapControl = new ol.control.OverviewMap({
+        className:'ol-overviewmap ol-custom-overviewmap',
+        layers:[
+            new ol.layer.Tile({
+                // source:new ol.source.OSM({
+                //     'url':'http://{a-c}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
+                // })
+                source: new ol.source.OSM({
+                    'url': 'http://tile.stamen.com/watercolor/{z}/{x}/{y}.jpg'
+                })
+            })
+        ],
+        collapseLabel:'\u00BB', //展开时按钮标识
+        label:'\u00Ab', //折叠时按钮标识
+        collapsed:false //初始默认展开
+    });
+    map.addControl(overviewMapControl);
+
+    //全屏
+    var full = new ol.control.FullScreen();
+    map.addControl(full);
+
+//基本操作=================================================
+    var view = map.getView();
+    var zoom = view.getZoom();
+    var center = view.getCenter();
+    var rotation = view.getRotation();
+    function suoxiao(){
+        var view =map.getView();
+        view.setZoom(view.getZoom()-1);
+    };
+    function fangda(){
+        var view =map.getView();
+        view.setZoom(view.getZoom()+1);
+    };
+    function wuhan(){
+        var view =map.getView();
+        var wh = ol.proj.fromLonLat([114.31667,30.51667]);
+        view.setCenter(wh);
+    };
+    function fuwei(){
+        console.log(center);
+        view.setCenter(center);
+        view.setRotation(rotation);
+        view.setZoom(zoom);
+    };
+
+    //为内置按钮添加提示信息
+    $('.ol-zoom-in,.ol-zoom-out').tooltip({
+        placement:'right'
+    });
+    $('.ol-rotate-reset,.ol-attribution button[title]').tooltip({
+        placement:'left'
+    });
+
+</script>
+</body>
+
+</html>

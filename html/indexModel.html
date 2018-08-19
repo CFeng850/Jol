@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>首页基本效果</title>
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="../js/common/commonMap.js" charset="utf-8"></script>
+</head>
+<body>
+
+<script>
+    $(function() {
+        getMap('mapDiv')
+    });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" style="background-color: #ffffff;height: 20px;"> </div>
+    </div>
+    <!--地图控件-->
+    <div class="row">
+        <div id="mapDiv" class="col-md-12" style="background-color: #bad4ff;height: 400px;">
+
+        </div>
+    </div>
+
+    <!--详情介绍-->
+    <div class="row">
+        <!--妖怪照片展示-->
+        <div class="col-md-3" style="background-color: #bad4ff;height: 300px;text-align:center">
+            <img src="../image/goblin/妖怪例子1.jpg" style="height:100%;border:0px solid;border-radius:25px;">
+        </div>
+        <!--文字说明-->
+        <div class="col-md-9" style="background-color: #bad4ff;height: 300px;margin: auto">
+            <div style="background-color: #fff4d6;width: 100%;height:100%;border:0px solid;border-radius:25px;padding: 10px 10px 10px 10px;">
+                 <!--<p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><img style=" height: 50px" src="../image/base/出处.jpg">：妖</p>-->
+                 <p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><strong>名称:</strong>妖</p>
+                 <p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><strong>别名:</strong>怪</p>
+                 <p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><strong>出处:</strong>《阅微草堂笔记》</p>
+                 <p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><strong>概述:</strong>
+                    <pre style="background-color: #fff4d6;">
+1:
+2:
+3：
+                    </pre>
+                 </p>
+                 <p style="font-size: 20px;font-family: 宋体;margin-bottom: 0px;"><strong>标签:</strong></p>
+                        <div style="font-size: 15px;background-color: #fff8e4; display:inline;border:1px solid;border-radius:5px;margin-left: 15px;">不吃人</div>
+                        <div style="font-size: 15px;background-color: #fff8e4; display:inline;border:1px solid;border-radius:5px;margin-left: 15px;">吃草</div>
+                        <div style="font-size: 15px;background-color: #fff8e4; display:inline;border:1px solid;border-radius:5px;margin-left: 15px;">要喝水</div>
+            </div>
+        </div>
+    </div>
+
+    <!--具体信息-->
+    <div class="row">
+        <div  class="col-md-12" style="background-color: #bad4ff;height: 500px;">
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+@keyframes zoom
+{
+    from {top: 0; left: 0; width: 32px; height: 32px;}
+    50% {top: -16px; left: -16px; width: 64px; height: 64px;}
+    to {top: 0; left: 0; width: 32px; height: 32px;}
+}
+
+@-moz-keyframes zoom /* Firefox */
+{
+    from {top: 0; left: 0; width: 32px; height: 32px;}
+    50% {top: -16px; left: -16px; width: 64px; height: 64px;}
+    to {top: 0; left: 0; width: 32px; height: 32px;}
+}
+
+@-webkit-keyframes zoom /* Safari 和 Chrome */
+{
+    from {top: 0; left: 0; width: 32px; height: 32px;}
+    50% {top: -16px; left: -16px; width: 64px; height: 64px;}
+    to {top: 0; left: 0; width: 32px; height: 32px;}
+}
+
+@-o-keyframes zoom /* Opera */
+{
+    from {top: 0; left: 0; width: 32px; height: 32px;}
+    50% {top: -16px; left: -16px; width: 64px; height: 64px;}
+    to {top: 0; left: 0; width: 32px; height: 32px;}
+}
+
+/* 应用css动画到图标元素上 */
+#anchorImg
+{
+    display: block;
+    position: absolute;
+    animation: zoom 5s;
+    animation-iteration-count: infinite; /* 一直重复动画 */
+    -moz-animation: zoom 5s; /* Firefox */
+    -moz-animation-iteration-count: infinite; /* 一直重复动画 */
+    -webkit-animation: zoom 5s;  /* Safari 和 Chrome */
+    -webkit-animation-iteration-count: infinite; /* 一直重复动画 */
+    -o-animation: zoom 5s; /* Opera */
+    -o-animation-iteration-count: infinite; /* 一直重复动画 */
+}
