@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图形绘制</title>
+
+    <link href="../css/ol.css" rel="stylesheet" type="text/css" />
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/jquery.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js" charset="utf-8"></script>
+
+
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div  id="map"  class="col-md-12" style="background-color: #ffffff;width: 1200px;height: 500px;"> </div>
+    </div>
+    <div class="row">
+        <div>
+            <div id="menu">
+                <select id="type">
+                    <option value="None">无</option>
+                    <option value="Point">点</option>
+                    <option value="LineString">线</option>
+                    <option value="Polygon">多边形</option>
+                    <option value="Circle">圆</option>
+                    <option value="Square">正方形</option>
+                    <option value="Box">长方形</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var map = new ol.Map({
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            })
+        ],
+        target: 'map',
+        view: new ol.View({
+            projection: 'EPSG:4326',
+            center: [104, 31],
+            zoom: 10
+        })
+    });
+
+
+    var source = new ol.source.Vector({wrapX:false});
+    var vector = new ol.layer.Vector({
+        source: source,
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255,255,255,0.2)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#ffcc33',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#ffcc33'
+                })
+            })
+        })
+    });
+    map.addLayer(vector);
+
+    var typeSelect = document.getElementById('type');
+    typeSelect.onchange = function(e){
+        map.removeInteraction(draw);
+        addInteraction();
+    };
+    addInteraction();
+
+
+    var draw;
+    function addInteraction(){
+        var value = typeSelect.value;
+        if(value !=='None'){
+            if(source ==null){
+                source =new ol.source.Vector({wrapX:false});
+                vector.setSource(source);
+            }
+            var  geometryFunction ,maxPoints;
+            if(value==='Square'){
+                value = 'Circle';
+                geometryFunction = ol.interaction.Draw.createRegularPolygon(4)
+            }else if(value ==='Box'){
+                value = 'LineString';
+                maxPoints =2;
+                geometryFunction = function (coordinates,geometry){
+                    if(!geometry){
+                        geometry = new ol.geom.Polygon(null);
+                    }
+                    var start = coordinates[0];
+                    var end = coordinates[1];
+                    geometry.setCoordinates([
+                        [start,[start[0],end[1]],end,[end[0],start[1]],start]
+                    ]);
+                    return geometry;
+                };
+            }
+
+            draw = new ol.interaction.Draw({
+                source:source,
+                type:(value),/** @type {ol.geom.GeometryType} */
+                geometryFunction:geometryFunction,
+                maxPoints:maxPoints
+            });
+            map.addInteraction(draw);
+        }else{
+            source = null;
+            vector.setSource(source);//清空绘制
+        }
+
+    }
+</script>
+
+
+</body>
+</html>

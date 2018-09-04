@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<script>
+
+    var path = new Array();
+    for(var i=0;i<10;i++){
+        var pt = {
+            "x" : i,
+            "y" : i
+        };
+        path[i]=pt;
+    }
+    // var json = JSON.parse(path);
+    var json = JSON.stringify(path);
+    console.log(json)
+    console.log(json[0])
+
+    var obj = eval('(' + json + ')');
+    console.log(obj[0].x);
+
+</script>
+</body>
+</html>

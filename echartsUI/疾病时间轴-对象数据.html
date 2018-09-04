@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/echarts.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 1000px;height:400px;">
+    123
+</div>
+<script>
+    //绑定容器
+    var myChart = echarts.init(document.getElementById('main'));
+    //设置参数
+    option = {
+        //数据节点消息提示
+        tooltip: {
+            trigger: 'item',
+            formatter : function(param) {
+                var result = param.data.name;
+                result += '<br/>';
+                result += '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + param.color + '"></span>';
+                result += param.data.name + "：";
+                result += param.data.id;
+                return result;
+            }
+        },
+        title: {
+            text: 'XXXXXXXX',
+            subtext: '纯属虚构'
+        },
+
+        legend: {
+            data:['1','2']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: ['1','2','3','4','5','6','7']
+        },
+        yAxis: {
+            type : 'category',
+            data: ['1','2','3','4','5','6','7']
+        },
+        series: [
+            {
+                name:'线条1',
+                type:'line',
+                symbol:'',
+                data:[{
+                    value: [1, 1],
+                    label: {},
+                    itemStyle:{},
+                    name:'点1',
+                    id:'11111'
+                },  {
+                    value: [2, 2],
+                    label: {},
+                    itemStyle:{},
+                    name:'点2',
+                    id:'22222'
+                }, {
+                    value: [3, 3],
+                    label: {},
+                    itemStyle:{},
+                    name:'点3',
+                    id:'33333'
+                }],
+
+            }
+
+        ]
+    };
+    myChart.setOption(option);
+    //添加点击事件
+    myChart.on('click', function (params) {
+        console.log(params);
+        console.log(params.data.id);
+        console.log(params.data.name);
+    });
+</script>
+</body>
+</html>

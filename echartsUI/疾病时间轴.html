@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/echarts.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 1000px;height:400px;">
+    123
+</div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    option = {
+        title: {
+            text: '疾病时间轴',
+            subtext: '纯属虚构'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['最高气温','最低气温']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: ['2012-01-01','2013-03-01','2013-05-01','2013-06-1','2013-08-01','2017-01-01','2018-01-01']
+        },
+        yAxis: {
+            type : 'category',
+            data : ['糖尿病','高血压','冠心病','精神病','脑卒中']
+        },
+        series: [
+            {
+                name:'高血压',
+                type:'line',
+                data:[{
+                    name:'hello',
+                    x:2 ,
+                    y:2,
+                    pic:1
+                },  '',  '',1, 1, '',''],
+
+            }
+            ,
+            {
+                name:'冠心病',
+                type:'line',
+                data:[2,2,2, '', '',2,2],
+                markPoint: {
+                    data: [
+                        {name: '周最低', value: -2, xAxis: 1, yAxis: -1.5}
+                    ]
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);
+    myChart.on('click', function (params) {
+        // 控制台打印数据的名称
+        console.log(params.name);
+        console.log(params);
+    });
+</script>
+</body>
+</html>

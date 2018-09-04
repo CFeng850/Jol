@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<%--血压,血糖示意图--%>
+<div style="width: 98%;height: 45%;background-color: white;margin: 5px 5px 10px 10px;;float: left">
+    <div id="mb_div" style="height:auto;width:50%;float:left;">
+
+        <ul class="nav nav-tabs">
+            <li id="gxyli" class="active"><a id="home-tab2" data-toggle="tab" href="#gxy"><span class="glyphicon glyphicon-info-sign"></span> 高血压</a></li>
+            <li id="tnbli" ><a id="tnba" data-toggle="tab" href="#tnb"><span class="glyphicon glyphicon-info-sign"></span> 糖尿病</a></li>
+        </ul>
+
+        <div style="height:100%;width: 100%;margin-bottom: 15px " class="tab-content">
+            <div style="height:100%;width: 100%;" class="tab-pane fade  in active" id="gxy" aria-labelledby="home-tab2">
+                <div id="gxy_div2" style="height:100%;width: 100%;">
+
+                </div>
+                <div class="content" style="float:left;width:100%;height:auto;font-size: 12px; ">
+                    <table id="hypertensiontable" class="table table-hover table-condensed">
+
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade  " style="height:auto;width: 100%; " id="tnb" aria-labelledby="profile-tab">
+                <div id="tnb_div2" style="height:100%;width: 100%">
+
+                </div>
+                <div style="float:left;width:100%;height:auto;font-size: 12px; ">
+                    <table id="glycuresisable" class="table table-hover table-condensed">
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

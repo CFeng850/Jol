@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../js/echarts.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 600px;height:400px;">
+    123
+</div>
+<script>
+    var myChart = echarts.init(document.getElementById('main'));
+
+    option = {
+        dataset: [{
+            // 序号为 0 的 dataset。
+               source: [1],
+            }, {
+                // 序号为 1 的 dataset。
+                source: []
+            }, {
+                // 序号为 2 的 dataset。
+                source: []
+            }],
+            series: [{
+                // 使用序号为 2 的 dataset。
+                datasetIndex: 2
+            }, {
+                // 使用序号为 1 的 dataset。
+                datasetIndex: 1
+            }],
+        title: {
+            text: '疾病时间轴',
+            subtext: '纯属虚构'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data:['最高气温','最低气温']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            data: ['2012','2013','2014','2015','2016','2017','2018']
+        },
+        yAxis: {
+            type : 'category',
+            data : ['糖尿病','高血压','冠心病','精神病','脑卒中']
+        }
+    };
+    myChart.setOption(option);
+    myChart.on('click', function (params) {
+        // 控制台打印数据的名称
+        console.log(params.name);
+        console.log(params);
+    });
+</script>
+</body>
+</html>
