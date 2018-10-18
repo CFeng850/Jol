@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        #myDIV {
+            height: 0px;
+            background-color: coral;
+            color: white;
+            -webkit-animation: mymove 5s infinite; /* Chrome, Safari, Opera */
+            /*animation: mymove 5s infinite;*/
+            animation:mymove 1s linear forwards;
+        }
+
+        /* Chrome, Safari, Opera */
+        @-webkit-keyframes mymove {
+            50% {height: 200px;}
+        }
+
+        /* Standard syntax */
+        @keyframes mymove {
+            50% {height: 200px;}
+        }
+    </style>
+</head>
+<body>
+
+
+<div style="width: 200px;height: 200px;float:left;background-color: red">
+    <div id="myDIV" style="width: 200px;height: 0px;float:left;background-color: greenyellow"></div>
+</div>
+</body>
+</html>

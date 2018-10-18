@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>树的简单实例1</title>
+    <script src="jquery-1.7.1.min.js"></script>
+    <script src="zTree/js/jquery.ztree.core-3.5.js"></script>
+    <link rel="stylesheet" type="text/css" href="zTree/css/zTreeStyle/zTreeStyle.css"/>
+    <style>
+
+        .ztree li span.button.partentIcon_ico_open, .ztree li span.button.partentIcon_ico_close{
+            margin-right:2px;
+            background: url('img/链接.png') no-repeat scroll 0 0 transparent;
+            vertical-align:top; *vertical-align:middle
+        }
+
+        .ztree li span.button.sonIcon_ico_docu{
+            margin-right:2px;
+            background: url('img/链接.png') no-repeat scroll 0 0 transparent;
+            vertical-align:top; *vertical-align:middle
+        }
+    </style>
+    <SCRIPT LANGUAGE="JavaScript">
+        var zTreeObj;
+        // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            view:{
+                showLine:false,
+                showIcon:true
+            }
+        };
+        // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+        //数据格式1
+        var zNodes1 = [
+            {
+                name: "test1", open: true, children: [
+                    {name: "test1_1"}, {name: "test1_2"}]
+            },
+            {
+                name: "test2", open: true, children: [
+                    {name: "test2_1"}, {name: "test2_2", children: [{name: "test2_2_1"}]}]
+            }
+        ];
+        //数据格式2
+        var zNodes2 = [
+            {id: 1, pId: 0, name: "父节点1",iconOpen:"img/链接.png", iconClose:"img/链接.png"},
+            {id: 11, pId: 1, name: "子节点1", icon:"img/链接.png"},
+            {id: 12, pId: 1, name: "子节点2"},
+            {id: 2, pId: 0, name: "父节点2", icon:"img/数据库.png"},
+            {id: 21, pId: 2, name: "子节点1"},
+            {id: 22, pId: 2, name: "子节点2"},
+            {id: 3, pId: 0, name: "父节点2",iconSkin:"partentIcon"},
+            {id: 31, pId: 3, name: "子节点1", iconSkin:"sonIcon"}
+        ];
+
+        //生成树
+        $(document).ready(function () {
+            zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes2);
+        });
+        function a(a1,a2){
+        $.ajax({
+            url:'http://www.baidu.com',
+            data:{
+                "a1":1,
+                a2:a2
+                },
+            // data:"a1=1&a2=2",
+            type:'GET',
+            success:function (result) {
+                console.log(result)
+            }
+        })
+        }
+    </SCRIPT>
+</head>
+<BODY>
+
+123
+<div style="width: 300px;height: 1000px;background-color: #afd9ee">
+    <ul id="treeDemo" class="ztree"></ul>
+</div>
+
+<script>
+    a('1',a);
+</script>
+</BODY>
+</html>
